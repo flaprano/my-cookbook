@@ -18,10 +18,18 @@
               <p class="navbar-text">Bem-vindo ao maior livro de receitas online</p>
               <%= render 'shared/search_form' %>
               <%= link_to 'Enviar uma receita', new_recipe_path, class: 'btn btn-success navbar-btn' %>
+              <% if user_signed_in? %>
+                <%= "Olá #{current_user.email}" %>
+                <%= link_to 'Logout', destroy_user_session_path, method: :delete, class: 'btn btn-danger navbar-btn' %>
+              <% else %>
+                <%= link_to 'Login', new_user_session_path, class: 'btn btn-primary navbar-btn' %>
+              <% end %>
             </div>
           </div>
         </nav>
       </header>
+      <p class="notice"><%= notice %></p>
+       <p class="alert"><%= alert %></p>
       <% if flash[:error] %>
         <div class="alert alert-danger" role="alert">
           <%= flash[:error] %>
