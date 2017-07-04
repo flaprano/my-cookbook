@@ -1,6 +1,7 @@
 class CuisinesController < ApplicationController
+  before_action :find_cuisine, only: [:edit, :update, :show]
+
   def show
-    @cuisine = Cuisine.find(params[:id])
   end
 
   def new
@@ -18,12 +19,9 @@ class CuisinesController < ApplicationController
   end
 
   def edit
-    @cuisine = Cuisine.find(params[:id])
   end
 
   def update
-    @cuisine = Cuisine.find(params[:id])
-
     if @cuisine.update(cuisine_params)
       redirect_to @cuisine
     else
@@ -36,6 +34,10 @@ class CuisinesController < ApplicationController
 
   def cuisine_params
     params.require(:cuisine).permit(:name)
+  end
+
+  def find_cuisine
+      @cuisine = Cuisine.find(params[:id])
   end
 
 end

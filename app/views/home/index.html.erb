@@ -3,15 +3,7 @@
     <%= render 'shared/aside' %>
   </div>
   <div class="col-md-9 col-xs-12">
-    <% @recipes.each do |recipe| %>
-      <h1><%= link_to recipe.title, recipe %></h1>
-      <ul>
-        <li><%= recipe.recipe_type.name %></li>
-        <li><%= recipe.cuisine.name %></li>
-        <li><%= recipe.difficulty %></li>
-        <li><%= recipe.cook_time %> minutos</li>
-      </ul>
-    <% end %>
+      <%= render 'recipes/recipe' %>
   </div>
   <%= link_to 'Ver todas receitas', recipes_path, class: 'btn btn-default' %>
 </div>

@@ -1,6 +1,8 @@
 class RecipesController < ApplicationController
+  before_action :set_collections, only: [:new, :edit]
+  before_action :find_recipe, only: [:show, :edit, :update]
+
   def show
-    @recipe = Recipe.find(params[:id])
   end
 
   def index
@@ -8,8 +10,6 @@ class RecipesController < ApplicationController
   end
 
   def new
-    @cuisines = Cuisine.all
-    @recipe_types = RecipeType.all
     @recipe = Recipe.new
   end
 
@@ -26,13 +26,9 @@ class RecipesController < ApplicationController
   end
 
   def edit
-    @cuisines = Cuisine.all
-    @recipe_types = RecipeType.all
-    @recipe = Recipe.find(params[:id])
   end
 
   def update
-    @recipe = Recipe.find(params[:id])
     if @recipe.update(recipe_params)
       redirect_to @recipe
     else
@@ -45,7 +41,8 @@ class RecipesController < ApplicationController
 
   def search
     @search_term = params[:search]
-    @recipes = Recipe.where(title: @search_term)
+    #@recipes = Recipe.where("title = ?", title: @search_term)
+    @recipes = Recipe.where('title like ?', "%#{@search_term}%")
   end
 
   private
@@ -53,5 +50,14 @@ class RecipesController < ApplicationController
   def recipe_params
     params.require(:recipe).permit(:title, :recipe_type_id, :cuisine_id, :difficulty,
                                   :cook_time, :ingredients, :method)
+  end
+
+  def set_collections
+      @cuisines = Cuisine.all
+      @recipe_types = RecipeType.all
+  end
+
+  def find_recipe
+    @recipe = Recipe.find(params[:id])
   end
 end
