@@ -1,4 +1,4 @@
-<h1>Cadastrar Nova Cozinha</h1>
+<h1>Editar Cozinha</h1>
 
 <% if @cuisine.errors.any? %>
   <% @cuisine.errors.full_messages.each do |message| %>
@@ -11,5 +11,6 @@
 <%= form_for @cuisine do |f| %>
   <%= f.label :name, 'Nome' %>
   <%= f.text_field :name %>
+
   <%= f.submit 'Enviar' %>
 <% end %>
