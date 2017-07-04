@@ -41,8 +41,10 @@ class RecipesController < ApplicationController
 
   def search
     @search_term = params[:search]
-    #@recipes = Recipe.where("title = ?", title: @search_term)
-    @recipes = Recipe.where('title like ?', "%#{@search_term.strip}%")
+    unless @search_term.strip.empty?
+      #@recipes = Recipe.where("title = ?", title: @search_term)
+      @recipes = Recipe.where('title like ?', "%#{@search_term}%")
+    end
   end
 
   private
