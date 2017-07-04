@@ -1,3 +1,4 @@
+<% unless @recipes.empty? %>
 <% @recipes.each do |recipe| %>
     <h1><%= link_to recipe.title, recipe %> </h1>
     <ul>
@@ -7,3 +8,4 @@
         <li><%= recipe.cook_time %> minutos</li>
     </ul>
 <%end%>
+<% end %>
