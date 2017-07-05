@@ -10,18 +10,22 @@ class RecipesController < ApplicationController
   end
 
   def new
-    @recipe = Recipe.new
+    if user_signed_in?
+      @recipe = Recipe.new
+    else
+      redirect_to new_user_session_path
+    end
   end
 
   def create
-    @recipe = Recipe.new(recipe_params)
+    @recipe = current_user.recipes.new(recipe_params)
     if @recipe.save
       redirect_to @recipe
     else
       flash.now[:error] = 'Você deve informar todos os dados da receita'
       @cuisines = Cuisine.all
       @recipe_types = RecipeType.all
-      render 'new'
+      render :new
     end
   end
 
@@ -35,7 +39,7 @@ class RecipesController < ApplicationController
       flash.now[:error] = 'Você deve informar todos os dados da receita'
       @cuisines = Cuisine.all
       @recipe_types = RecipeType.all
-      render 'new'
+      render :new
     end
   end
 
@@ -46,6 +50,10 @@ class RecipesController < ApplicationController
       #@recipes = Recipe.where("title = ?", title: @search_term)
       @recipes = Recipe.where('title like ?', "%#{@search_term}%")
     end
+  end
+
+  def my_recipes
+    @recipes = current_user.recipes
   end
 
   private

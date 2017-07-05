@@ -20,6 +20,7 @@
               <%= link_to 'Enviar uma receita', new_recipe_path, class: 'btn btn-success navbar-btn' %>
               <% if user_signed_in? %>
                 <%= "Olá #{current_user.email}" %>
+                <%= link_to 'Minhas receitas', my_recipes_path, method: :get, class: 'btn btn-primary navbar-btn' %> 
                 <%= link_to 'Logout', destroy_user_session_path, method: :delete, class: 'btn btn-danger navbar-btn' %>
               <% else %>
                 <%= link_to 'Login', new_user_session_path, class: 'btn btn-primary navbar-btn' %>

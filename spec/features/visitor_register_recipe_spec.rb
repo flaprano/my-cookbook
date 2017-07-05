@@ -3,12 +3,19 @@ require 'rails_helper'
 feature 'Visitor register recipe' do
   scenario 'successfully' do
     #cria os dados necessários
+    User.create(email: 'joao@campus.com', password: '123456')
+
     Cuisine.create(name: 'Arabe')
     RecipeType.create(name: 'Entrada')
     RecipeType.create(name: 'Prato Principal')
     RecipeType.create(name: 'Sobremesa')
     # simula a ação do usuário
     visit root_path
+    click_on 'Login'
+    fill_in 'Email', with: 'joao@campus.com'
+    fill_in 'Senha', with: '123456'
+    click_on 'Enviar'
+
     click_on 'Enviar uma receita'
 
     fill_in 'Título', with: 'Tabule'
@@ -35,9 +42,16 @@ feature 'Visitor register recipe' do
 
   scenario 'and must fill in all fields' do
     #cria os dados necessários, nesse caso não vamos criar dados no banco
+    User.create(email: 'joao@campus.com', password: '123456')
+
     Cuisine.create(name: 'Arabe')
     # simula a ação do usuário
     visit root_path
+    click_on 'Login'
+    fill_in 'Email', with: 'joao@campus.com'
+    fill_in 'Senha', with: '123456'
+    click_on 'Enviar'
+
     click_on 'Enviar uma receita'
 
     fill_in 'Título', with: ''
@@ -50,4 +64,18 @@ feature 'Visitor register recipe' do
 
     expect(page).to have_content('Você deve informar todos os dados da receita')
   end
+
+  scenario 'must be logged' do
+    Cuisine.create(name: 'Arabe')
+    RecipeType.create(name: 'Entrada')
+    RecipeType.create(name: 'Prato Principal')
+    RecipeType.create(name: 'Sobremesa')
+
+    visit root_path
+
+    click_on 'Enviar uma receita'
+
+    expect(current_path).to eq new_user_session_path
+  end
+
 end
