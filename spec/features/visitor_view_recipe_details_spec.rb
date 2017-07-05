@@ -14,6 +14,8 @@ feature 'Visitor view recipe details' do
                           method: 'Cozinhe a cenoura, corte em pedaços pequenos, misture com o restante dos ingredientes')
 
     # simula a ação do usuário
+    login_as(user)
+
     visit root_path
     click_on recipe.title
 
@@ -44,6 +46,8 @@ feature 'Visitor view recipe details' do
                           method: 'Cozinhe a cenoura, corte em pedaços pequenos, misture com o restante dos ingredientes')
 
     # simula a ação do usuário
+    login_as(user)
+
     visit root_path
     click_on recipe.title
     click_on 'Voltar'
@@ -51,4 +55,5 @@ feature 'Visitor view recipe details' do
     # expectativa da rota atual
     expect(current_path).to eq(root_path)
   end
+
 end

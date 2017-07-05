@@ -24,6 +24,7 @@ feature 'Visitor search for recipes' do
                            method: 'Cozinhe a cenoura, misture com os legumes')
 
     # simula a ação do usuário
+    login_as(user)
     visit root_path
     fill_in 'Busca', with: 'Bolo de cenoura'
     click_on 'Buscar'
@@ -53,6 +54,8 @@ feature 'Visitor search for recipes' do
                            method: 'Cozinhe a cenoura, corte em pedaços pequenos, misture com o restante dos ingredientes')
 
     # simula a ação do usuário
+    login_as(user)
+    
     visit root_path
     fill_in 'Busca', with: 'Bolo de cenoura'
     click_on 'Buscar'

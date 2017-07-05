@@ -20,6 +20,8 @@ feature 'User update recipe' do
                           method: 'Cozinhe a cenoura, corte em pedaços pequenos, misture com o restante dos ingredientes')
 
     # simula a ação do usuário
+    login_as(user)
+
     visit root_path
     click_on 'Bolodecenoura'
     click_on 'Editar'
@@ -63,6 +65,8 @@ feature 'User update recipe' do
                           method: 'Cozinhe a cenoura, corte em pedaços pequenos, misture com o restante dos ingredientes')
 
     # simula a ação do usuário
+    login_as(user)
+
     visit root_path
     click_on 'Bolodecenoura'
     click_on 'Editar'
@@ -77,4 +81,81 @@ feature 'User update recipe' do
 
     expect(page).to have_content('Você deve informar todos os dados da receita')
   end
+
+  scenario 'and only if the recipe belongs to him' do
+    #cria os dados necessários, nesse caso não vamos criar dados no banco
+    user = User.create(email: 'joao@campus.com', password: '123456')
+    other_user = User.create(email: 'teste@teste.com', password: '123456')
+
+    arabian_cuisine = Cuisine.create(name: 'Arabe')
+    brazilian_cuisine = Cuisine.create(name: 'Brasileira')
+
+    appetizer_type = RecipeType.create(name: 'Entrada')
+    main_type = RecipeType.create(name: 'Prato Principal')
+    dessert_type = RecipeType.create(name: 'Sobremesa')
+
+    recipe = Recipe.create(title: 'Bolodecenoura', recipe_type: main_type,
+                              cuisine: arabian_cuisine, difficulty: 'Médio',
+                              cook_time: 50,
+                              user: user,
+                              ingredients: 'Farinha, açucar, cenoura',
+                              method: 'Cozinhe a cenoura, corte em pedaços pequenos, misture com o restante dos ingredientes')
+
+    # simula a ação do usuário
+    login_as(other_user)
+
+    visit root_path
+    click_on 'Bolodecenoura'
+
+    expect(page).not_to have_link('Editar')
+  end
+
+  scenario 'and try to access from url' do
+    #cria os dados necessários, nesse caso não vamos criar dados no banco
+    user = User.create(email: 'joao@campus.com', password: '123456')
+    other_user = User.create(email: 'teste@teste.com', password: '123456')
+
+    arabian_cuisine = Cuisine.create(name: 'Arabe')
+    brazilian_cuisine = Cuisine.create(name: 'Brasileira')
+
+    appetizer_type = RecipeType.create(name: 'Entrada')
+    main_type = RecipeType.create(name: 'Prato Principal')
+    dessert_type = RecipeType.create(name: 'Sobremesa')
+
+    recipe = Recipe.create(title: 'Bolodecenoura', recipe_type: main_type,
+                              cuisine: arabian_cuisine, difficulty: 'Médio',
+                              cook_time: 50,
+                              user: user,
+                              ingredients: 'Farinha, açucar, cenoura',
+                              method: 'Cozinhe a cenoura, corte em pedaços pequenos, misture com o restante dos ingredientes')
+
+    # simula a ação do usuário
+    login_as(other_user)
+    visit edit_recipe_path(recipe)
+
+    expect(current_path).to eq root_path
+  end
+
+    scenario 'and user without login never see edit button' do
+      #cria os dados necessários, nesse caso não vamos criar dados no banco
+      user = User.create(email: 'joao@campus.com', password: '123456')
+
+      cuisine = Cuisine.create(name: 'Brasileira')
+
+      recipe_type = RecipeType.create(name: 'Sobremesa')
+
+      recipe = Recipe.create(title: 'Bolo de cenoura', recipe_type:  recipe_type,
+                            cuisine: cuisine, difficulty: 'Médio',
+                            cook_time: 60,
+                            user: user,
+                            ingredients: 'Farinha, açucar, cenoura',
+                            method: 'Cozinhe a cenoura, corte em pedaços pequenos, misture com o restante dos ingredientes')
+
+      # simula a ação do usuário
+      visit root_path
+      click_on 'Bolo de cenoura'
+
+      expect(page).not_to have_link('Editar')
+    end
+
 end

@@ -1,6 +1,8 @@
 class RecipesController < ApplicationController
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update]
   before_action :set_collections, only: [:new, :edit]
   before_action :find_recipe, only: [:show, :edit, :update]
+  before_action :recipe_belong_to_user, only: [:edit, :update]
 
   def show
   end
@@ -10,11 +12,7 @@ class RecipesController < ApplicationController
   end
 
   def new
-    if user_signed_in?
-      @recipe = Recipe.new
-    else
-      redirect_to new_user_session_path
-    end
+    @recipe = Recipe.new
   end
 
   def create
@@ -64,11 +62,16 @@ class RecipesController < ApplicationController
   end
 
   def set_collections
-      @cuisines = Cuisine.all
-      @recipe_types = RecipeType.all
+    @cuisines = Cuisine.all
+    @recipe_types = RecipeType.all
   end
 
   def find_recipe
     @recipe = Recipe.find(params[:id])
   end
+
+  def recipe_belong_to_user
+    redirect_to root_path unless current_user.recipes.include? @recipe
+  end
+
 end
