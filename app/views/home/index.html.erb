@@ -3,7 +3,11 @@
     <%= render 'shared/aside' %>
   </div>
   <div class="col-md-9 col-xs-12">
-      <%= render 'recipes/recipe' %>
+    <% unless @recipes.empty? %>
+    <% @recipes.each do |recipe| %>
+      <%= render recipe %>
+      <%end%>
+      <% end %>
   </div>
   <%= link_to 'Ver todas receitas', recipes_path, class: 'btn btn-default' %>
 </div>

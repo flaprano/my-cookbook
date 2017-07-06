@@ -1,3 +1,6 @@
 <h1>Resultado da busca por: <%= @search_term %></h1>
-
-<%= render 'recipe' %>
+<% unless @recipes.empty? %>
+<% @recipes.each do |recipe| %>
+<%= render recipe %>
+<%end%>
+<% end %>
