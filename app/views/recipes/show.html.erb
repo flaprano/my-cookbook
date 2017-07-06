@@ -9,8 +9,11 @@
 <h3>Como Preparar</h3>
 <p><%= @recipe.method %></p>
 
-<% if user_signed_in? and current_user.recipes.include? @recipe %>
-  <%= link_to 'Editar', edit_recipe_path(@recipe), class: 'btn btn-primary' %>
+<% if user_signed_in? %>
+  <% if current_user.recipes.include? @recipe %>
+    <%= link_to 'Editar', edit_recipe_path(@recipe), class: 'btn btn-primary' %>
+  <% end %>
+  <%= link_to 'Favoritar', favorite_recipe_path(@recipe), method: :post, class: 'btn btn-primary' %>
 <% end %>
 
 <%= link_to 'Voltar', root_path, class: 'btn btn-default' %>

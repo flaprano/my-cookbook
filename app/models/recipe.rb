@@ -4,4 +4,6 @@ class Recipe < ApplicationRecord
   belongs_to :user
   validates :title, :difficulty, :cook_time,
             :ingredients, :method, presence: true
+  has_many :favorite_recipes
+  has_many :users, through: :favorite_recipes
 end

@@ -1,7 +1,7 @@
 class RecipesController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :edit, :update]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :favorite, :favorited_recipes]
   before_action :set_collections, only: [:new, :edit]
-  before_action :find_recipe, only: [:show, :edit, :update]
+  before_action :find_recipe, only: [:show, :edit, :update, :favorite]
   before_action :recipe_belong_to_user, only: [:edit, :update]
 
   def show
@@ -53,6 +53,16 @@ class RecipesController < ApplicationController
   def my_recipes
     @recipes = current_user.recipes
   end
+
+  def favorite
+    FavoriteRecipe.create(user: current_user, recipe: @recipe)
+    redirect_to @recipe
+  end
+
+  def favorited_recipes
+
+  end
+
 
   private
 
